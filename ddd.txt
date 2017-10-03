@@ -1,0 +1,45 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Configuration;
+using System.Data.SqlClient;
+
+namespace Enrol
+{
+    public partial class frmAddSubject : Form
+    {
+        SqlConnection connection;
+        String connectionString;
+        public frmAddSubject()
+        {
+            InitializeComponent();
+            connectionString = ConfigurationManager.ConnectionStrings["Enrol.Properties.Settings.NoStringsAttached"].ConnectionString;
+        }
+
+        private void frmAddSubject_Load(object sender, EventArgs e)
+        {
+            listSubject();
+            
+            
+        }
+
+        void listSubject()
+        {
+            using (connection = new SqlConnection(connectionString))
+            using (SqlDataAdapter adapter = new SqlDataAdapter("select * from Subjects", connection))
+            {
+                DataTable dt1 = new DataTable();
+                adapter.Fill(dt1);
+
+                comboBox1.DisplayMember = "subjName";
+                comboBox1.DataSource = dt1;
+            }
+        }
+    }
+    }
